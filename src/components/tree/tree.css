@@ -1,0 +1,36 @@
+
+
+.tree__branch-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--ion-color-light);
+  font-size: 0.75em;
+  padding: 2px 0;
+}
+
+.tree__branch-header-inner {
+  display: flex;
+  align-items: center;
+}
+
+.tree-branch-header-inner > * {
+  margin-left: 8px;
+}
+
+.tree__node-name {
+
+}
+
+.tree__inspect-btn {
+  appearance: none;
+  color: var(--ion-color-primary);
+  font-weight: 500;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 0.75em;
+}
+
+ul {
+  padding-inline-start: 20px;
+}

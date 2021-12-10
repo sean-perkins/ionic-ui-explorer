@@ -5,6 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { WebComponentNode } from "./components/app-explorer/types";
 export namespace Components {
     interface AppExample {
     }
@@ -25,6 +26,12 @@ export namespace Components {
          */
         "disabled": boolean;
         "index": number;
+    }
+    interface AppTree {
+        /**
+          * The nested structure of web component element nodes to display in a nested list.
+         */
+        "node": WebComponentNode;
     }
 }
 declare global {
@@ -64,6 +71,12 @@ declare global {
         prototype: HTMLAppTabButtonElement;
         new (): HTMLAppTabButtonElement;
     };
+    interface HTMLAppTreeElement extends Components.AppTree, HTMLStencilElement {
+    }
+    var HTMLAppTreeElement: {
+        prototype: HTMLAppTreeElement;
+        new (): HTMLAppTreeElement;
+    };
     interface HTMLElementTagNameMap {
         "app-example": HTMLAppExampleElement;
         "app-explorer": HTMLAppExplorerElement;
@@ -71,6 +84,7 @@ declare global {
         "app-knob-css-variable-list": HTMLAppKnobCssVariableListElement;
         "app-root": HTMLAppRootElement;
         "app-tab-button": HTMLAppTabButtonElement;
+        "app-tree": HTMLAppTreeElement;
     }
 }
 declare namespace LocalJSX {
@@ -99,6 +113,16 @@ declare namespace LocalJSX {
         "index"?: number;
         "onTabChange"?: (event: CustomEvent<number>) => void;
     }
+    interface AppTree {
+        /**
+          * The nested structure of web component element nodes to display in a nested list.
+         */
+        "node"?: WebComponentNode;
+        /**
+          * The inspect button for a specific element was selected. Emits the `HTMLElement` of the tag selected.
+         */
+        "onInspect"?: (event: CustomEvent<HTMLElement>) => void;
+    }
     interface IntrinsicElements {
         "app-example": AppExample;
         "app-explorer": AppExplorer;
@@ -106,6 +130,7 @@ declare namespace LocalJSX {
         "app-knob-css-variable-list": AppKnobCssVariableList;
         "app-root": AppRoot;
         "app-tab-button": AppTabButton;
+        "app-tree": AppTree;
     }
 }
 export { LocalJSX as JSX };
@@ -118,6 +143,7 @@ declare module "@stencil/core" {
             "app-knob-css-variable-list": LocalJSX.AppKnobCssVariableList & JSXBase.HTMLAttributes<HTMLAppKnobCssVariableListElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "app-tab-button": LocalJSX.AppTabButton & JSXBase.HTMLAttributes<HTMLAppTabButtonElement>;
+            "app-tree": LocalJSX.AppTree & JSXBase.HTMLAttributes<HTMLAppTreeElement>;
         }
     }
 }

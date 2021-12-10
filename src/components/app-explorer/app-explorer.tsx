@@ -23,10 +23,15 @@ export class AppExplorer implements ComponentInterface {
   @State() private activeTabIndex = 0;
   @State() private zoomFactor = 100;
 
+  @State() private inspectorWidth: number;
+  @State() private inspectorHeight: number;
+  @State() private inspectorX: number;
+  @State() private inspectorY: number;
+
   private targetEl: HTMLElement;
   private activeTargetEl: HTMLElement;
 
-  @Element() el: HTMLElement;
+  @Element() private el: HTMLElement;
 
   constructor() {
     this.activeTabChange = this.activeTabChange.bind(this);
@@ -92,42 +97,55 @@ export class AppExplorer implements ComponentInterface {
     }
   }
 
-  private renderComponent(component: WebComponentNode) {
-    return component.isWebComponent && (
-      <ul>
-        <li>
-          <div>
-            <p class='explorer__component-tag-name' id={component.uid}
-              onClick={() => {
-                this.activeTargetEl = component.el;
-                this.cssVariables = getCssVariablesForShadowEl(component.el);
-                this.cssShadowParts = getCssShadowParts(component.el);
-              }}
-              onMouseEnter={(e) => {
-                const target = e.target as HTMLElement;
-                if (target.querySelector('ul')) {
-                  return;
-                }
-                if (target.id === component.uid) {
-                  component.el.style.outline = '2px solid red';
-                }
-              }} onMouseLeave={() => {
-                component.el.style.outline = '';
-              }}>{component.el.tagName}</p>
-            {component.children.length > 0 && component.children.map(c => this.renderComponent(c))}
-          </div>
-        </li>
-      </ul>
-    )
+  private inspect(el: HTMLElement) {
+    this.activeTargetEl = el;
+    this.cssVariables = getCssVariablesForShadowEl(el);
+    this.cssShadowParts = getCssShadowParts(el);
   }
+
+  // private renderComponent(component: WebComponentNode) {
+  //   return component.isWebComponent && (
+  //     <ul>
+  //       <li>
+  //         <div>
+  //           <p class='explorer__component-tag-name' id={component.uid}
+  //             onClick={() => {
+  //               this.activeTargetEl = component.el;
+  //               this.cssVariables = getCssVariablesForShadowEl(component.el);
+  //               this.cssShadowParts = getCssShadowParts(component.el);
+  //             }}
+  //             onMouseEnter={(e) => {
+  //               const target = e.target as HTMLElement;
+  //               if (target.querySelector('ul')) {
+  //                 return;
+  //               }
+  //               if (target.id === component.uid) {
+  //                 component.el.style.outline = '2px solid red';
+
+  //                 const targetRect = this.targetEl.getBoundingClientRect();
+  //                 const componentRect = component.el.getBoundingClientRect();
+
+  //                 this.inspectorY = componentRect.top - targetRect.top;
+  //                 this.inspectorX = componentRect.left - targetRect.left;
+  //                 this.inspectorWidth = componentRect.width;
+  //                 this.inspectorHeight = componentRect.height;
+
+  //               }
+  //             }} onMouseLeave={() => {
+  //               component.el.style.outline = '';
+  //             }}>{component.el.tagName}</p>
+  //           {component.children.length > 0 && component.children.map(c => this.renderComponent(c))}
+  //         </div>
+  //       </li>
+  //     </ul>
+  //   )
+  // }
 
   private renderComponentsTab() {
     const { components } = this;
     return (
       <div class='explorer__elements'>
-        {
-          components && this.renderComponent(components)
-        }
+        {components && <app-tree node={components} onInspect={({ detail }) => this.inspect(detail)}></app-tree>}
       </div>
     )
   }
@@ -151,6 +169,7 @@ export class AppExplorer implements ComponentInterface {
   }
 
   render() {
+    const { inspectorHeight, inspectorWidth, inspectorX, inspectorY } = this;
     return (
       <Host>
         <div class='explorer__tabs'>
@@ -184,6 +203,11 @@ export class AppExplorer implements ComponentInterface {
               zoom: `${this.zoomFactor}%`
             }}>
               <slot />
+              <div class='explorer__canvas-inspector' style={{
+                width: `${inspectorWidth}px`,
+                height: `${inspectorHeight}px`,
+                transform: `translate(${Math.round(inspectorX)}px,${Math.round(inspectorY)}px)`
+              }}></div>
             </div>
           </div>
         </div>
@@ -212,19 +236,6 @@ export class AppExplorer implements ComponentInterface {
             }[this.activeTabIndex]}
           </div>
         </div>
-        {/* <div class='explorer__elements'>
-          {
-            this.components && this.renderComponent(this.components)
-          }
-        </div>
-        <div class='explorer__tray'>
-          <section id='css-variables'>
-            <app-knob-css-variable-list items={this.cssVariables} onVariableChange={(ev) => this.cssValueUpdated(ev)}></app-knob-css-variable-list>
-          </section>
-          <section id='css-shadow-parts'>
-            <app-knob-css-shadow-part-list items={this.cssShadowParts}></app-knob-css-shadow-part-list>
-          </section>
-        </div> */}
         {/* <section>
           <h4>Hovered Shadow Part</h4>
           <ul>

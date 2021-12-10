@@ -57,17 +57,29 @@
  * -------------------------------------------------- */
 
 .explorer__canvas {
-  padding: 40px 0;
+  position: relative;
+  resize: vertical;
+  overflow: auto;
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 }
 
+/* Explorer: Canvas Inspector
+ * -------------------------------------------------- */
 
-.explorer-component-highlighter {
+.explorer__canvas-inspector {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+
+  z-index: 10;
+
   border: 2px solid red;
   border-radius: 11px;
+
   padding: 4px;
+
   pointer-events: none;
   user-select: none;
-  inset: auto auto 0px 0px;
-  position: absolute;
+
 }
+
