@@ -1,0 +1,73 @@
+/* Tab Bar
+ * -------------------------------------------------- */
+
+.explorer__tab-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  height: 40px;
+  border-bottom: 1px solid var(--ion-color-light);
+}
+
+.explorer__tab-bar > * {
+  margin-left: 14px;
+}
+
+.explorer__tab-separator {
+  width: 1px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.1);
+  margin-top: 8px;
+}
+
+/* Tab Bar Control
+ * -------------------------------------------------- */
+
+.explorer__tab-control {
+  display: inline-flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  height: 40px;
+  background: none;
+  color: inherit;
+  padding: 0px;
+  cursor: pointer;
+  border-width: 3px 0px;
+  border-style: solid;
+  border-color: transparent;
+  border-image: initial;
+  transition: color 0.2s linear 0s;
+}
+
+.explorer__tab-control:hover {
+  color: var(--ion-color-primary);
+}
+
+.explorer__tab-control svg {
+  display: block;
+  width: 14px;
+  shape-rendering: inherit;
+  transform: translate3d(0px, 0px, 0px);
+  fill: currentColor;
+}
+
+/* Explorer: Canvas
+ * -------------------------------------------------- */
+
+.explorer__canvas {
+  padding: 40px 0;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+
+.explorer-component-highlighter {
+  border: 2px solid red;
+  border-radius: 11px;
+  padding: 4px;
+  pointer-events: none;
+  user-select: none;
+  inset: auto auto 0px 0px;
+  position: absolute;
+}

@@ -1,0 +1,17 @@
+
+:host {
+  --padding-top: 0px;
+  --padding-bottom: 0px;
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --background: red;
+
+  display: block;
+  background: var(--background);
+  padding: var(--padding-top) var(--padding-end) var(--padding-bottom) var(--padding-start);
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
