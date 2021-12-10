@@ -1,22 +1,18 @@
-# Stencil App Starter
+# Ionic UI Explorer
 
-Stencil is a compiler for building fast web apps using Web Components.
+Research and discovery project to build an interactive web component that can parse CSS variables and shadow parts from slotted content. This tool would allow developers to have an interactive example to update CSS variables to see the direct effects in the example app. It would also allow developers to select shadow parts to better understand theming capabilities within a web component.
 
-Stencil combines the best concepts of the most popular frontend frameworks into a compile-time rather than run-time tool.  Stencil takes TypeScript, JSX, a tiny virtual DOM layer, efficient one-way data binding, an asynchronous rendering pipeline (similar to React Fiber), and lazy-loading out of the box, and generates 100% standards-based Web Components that run in any browser supporting the Custom Elements v1 spec.
+![Screen Shot 2021-12-10 at 11 39 30 AM](https://user-images.githubusercontent.com/13732623/145609402-1ca1c46e-7040-4aba-9611-fd817aeae49f.png)
 
-Stencil components are just Web Components, so they work in any major framework or with no framework at all. In many cases, Stencil can be used as a drop in replacement for traditional frontend frameworks given the capabilities now available in the browser, though using it as such is certainly not required.
-
-Stencil also enables a number of key capabilities on top of Web Components, in particular Server Side Rendering (SSR) without the need to run a headless browser, pre-rendering, and objects-as-properties (instead of just strings).
+![Screen Shot 2021-12-10 at 11 40 10 AM](https://user-images.githubusercontent.com/13732623/145609413-23344dae-77b5-40b7-863c-ed67190305a2.png)
 
 ## Getting Started
 
-To start a new project using Stencil, clone this repo to a new directory:
+Running the app
 
 ```bash
-npm init stencil app
+npm install
 ```
-
-and run:
 
 ```bash
 npm start
