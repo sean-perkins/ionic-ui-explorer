@@ -11,6 +11,7 @@ export namespace Components {
     }
     interface AppExplorer {
         "frameSrc": string;
+        "i18n": { zoom_out: string; zoom_in: string; zoom_reset: string; canvas: string; component_explorer: string; css_variables: string; css_shadow_parts: string; };
     }
     interface AppKnobCssShadowPartList {
         /**
@@ -115,6 +116,7 @@ declare namespace LocalJSX {
     }
     interface AppExplorer {
         "frameSrc"?: string;
+        "i18n"?: { zoom_out: string; zoom_in: string; zoom_reset: string; canvas: string; component_explorer: string; css_variables: string; css_shadow_parts: string; };
     }
     interface AppKnobCssShadowPartList {
         /**

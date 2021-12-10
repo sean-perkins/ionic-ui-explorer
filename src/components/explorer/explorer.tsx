@@ -37,6 +37,16 @@ export class AppExplorer implements ComponentInterface {
   // Not supported (need to frame remote content)
   @Prop() frameSrc: string;
 
+  @Prop() i18n = {
+    zoom_out: 'Zoom out',
+    zoom_in: 'Zoom in',
+    zoom_reset: 'Zoom reset',
+    canvas: 'Canvas',
+    component_explorer: 'Component Explorer',
+    css_variables: 'CSS Variables',
+    css_shadow_parts: 'CSS Shadow Parts'
+  }
+
   constructor() {
     this.activeTabChange = this.activeTabChange.bind(this);
   }
@@ -169,26 +179,26 @@ export class AppExplorer implements ComponentInterface {
       <Host>
         <div class='explorer__tabs'>
           <div class='explorer__tab-bar'>
-            <app-tab-button active={true}>Canvas</app-tab-button>
+            <app-tab-button active={true}>{this.i18n.canvas}</app-tab-button>
             <span class='explorer__tab-separator'></span>
             <button
               class='explorer__tab-control'
               type='button'
-              aria-label='Zoom in'
+              aria-label={this.i18n.zoom_in}
               onClick={() => this.canvasZoomIn()}>
               <ZoomInIcon />
             </button>
             <button
               class='explorer__tab-control'
               type='button'
-              aria-label='Zoom out'
+              aria-label={this.i18n.zoom_out}
               onClick={() => this.canvasZoomOut()}>
               <ZoomOutIcon />
             </button>
             <button
               class='explorer__tab-control'
               type='button'
-              aria-label='Zoom reset'
+              aria-label={this.i18n.zoom_reset}
               onClick={() => this.setZoom(100)}>
               <ZoomResetIcon />
             </button>
@@ -214,15 +224,15 @@ export class AppExplorer implements ComponentInterface {
               <app-tab-button
                 active={this.activeTabIndex === 0}
                 index={0}
-                onTabChange={this.activeTabChange}>Component Explorer</app-tab-button>
+                onTabChange={this.activeTabChange}>{this.i18n.component_explorer}</app-tab-button>
               <app-tab-button
                 active={this.activeTabIndex === 1}
                 index={1}
-                onTabChange={this.activeTabChange}>CSS Variables</app-tab-button>
+                onTabChange={this.activeTabChange}>{this.i18n.css_variables}</app-tab-button>
               <app-tab-button
                 active={this.activeTabIndex === 2}
                 index={2}
-                onTabChange={this.activeTabChange}>CSS Shadow Parts</app-tab-button>
+                onTabChange={this.activeTabChange}>{this.i18n.css_shadow_parts}</app-tab-button>
             </div>
           </div>
           <div class='explorer__tab-content'>
