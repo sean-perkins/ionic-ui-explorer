@@ -15,7 +15,12 @@ body {
 }
 
 :root {
+  /* Color Tokens */
   --ion-color-primary: #3880ff;
   --ion-color-medium: #92949c;
   --ion-color-light: #f4f5f8;
+  --ion-color-danger: #eb445a;
+
+  /* Font size Tokens */
+  --ion-font-sm: 0.75rem;
 }

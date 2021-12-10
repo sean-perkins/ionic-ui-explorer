@@ -1,10 +1,12 @@
 
+/* Tree: Branch Header
+ * -------------------------------------------------- */
 
 .tree__branch-header {
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--ion-color-light);
-  font-size: 0.75em;
+  font-size: var(--ion-font-sm);
   padding: 2px 0;
 }
 
@@ -17,9 +19,8 @@
   margin-left: 8px;
 }
 
-.tree__node-name {
-
-}
+/* Tree: Inspect Button
+ * -------------------------------------------------- */
 
 .tree__inspect-btn {
   appearance: none;
@@ -28,8 +29,11 @@
   background: transparent;
   border: 0;
   cursor: pointer;
-  font-size: 0.75em;
+  font-size: var(--ion-font-sm);
 }
+
+/* Tree: Misc
+ * -------------------------------------------------- */
 
 ul {
   padding-inline-start: 20px;

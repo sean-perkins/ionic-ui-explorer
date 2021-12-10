@@ -1,4 +1,4 @@
-import { Component, ComponentInterface, h, Host, Element, State } from "@stencil/core";
+import { Component, ComponentInterface, h, Host, Element, State, Prop } from "@stencil/core";
 import { WebComponentNode } from "./types";
 import { getCssShadowParts, getCssVariablesForShadowEl, getWebComponentNodes } from "./utils/explorer-utils";
 import { ZoomInIcon } from "./icons/zoom-in";
@@ -7,7 +7,7 @@ import { ZoomResetIcon } from "./icons/zoom-reset";
 
 @Component({
   tag: 'app-explorer',
-  styleUrl: 'app-explorer.css',
+  styleUrl: 'explorer.css',
   shadow: true,
 })
 export class AppExplorer implements ComponentInterface {
@@ -30,24 +30,34 @@ export class AppExplorer implements ComponentInterface {
 
   private targetEl: HTMLElement;
   private activeTargetEl: HTMLElement;
+  private frameEl: HTMLIFrameElement;
 
   @Element() private el: HTMLElement;
+
+  // Not supported (need to frame remote content)
+  @Prop() frameSrc: string;
 
   constructor() {
     this.activeTabChange = this.activeTabChange.bind(this);
   }
 
   componentDidLoad() {
-    this.targetEl = this.activeTargetEl = this.el.children[0] as HTMLElement;
+    if (this.frameEl) {
+      this.targetEl = this.activeTargetEl = this.frameEl.querySelector('body').firstElementChild as HTMLElement;
+    } else {
+      this.targetEl = this.activeTargetEl = this.el.children[0] as HTMLElement;
+    }
 
-    this.cssVariables = getCssVariablesForShadowEl(this.targetEl);
-    this.cssShadowParts = getCssShadowParts(this.targetEl);
-    this.components = getWebComponentNodes(this.targetEl);
+    if (this.targetEl) {
+      this.cssVariables = getCssVariablesForShadowEl(this.targetEl);
+      this.cssShadowParts = getCssShadowParts(this.targetEl);
+      this.components = getWebComponentNodes(this.targetEl);
 
-    const hostEl = this.targetEl.shadowRoot ?? this.targetEl;
+      const hostEl = this.targetEl.shadowRoot ?? this.targetEl;
 
-    this.attachMouseMoveListener(hostEl);
-    this.attachClickListener(hostEl);
+      this.attachMouseMoveListener(hostEl);
+      this.attachClickListener(hostEl);
+    }
 
   }
 
@@ -59,7 +69,6 @@ export class AppExplorer implements ComponentInterface {
         return;
       }
       this.hoveredShadowPart = this.cssShadowParts.find(part => part === target);
-      console.log('active shadow part', this.hoveredShadowPart);
     })
   }
 
@@ -103,49 +112,31 @@ export class AppExplorer implements ComponentInterface {
     this.cssShadowParts = getCssShadowParts(el);
   }
 
-  // private renderComponent(component: WebComponentNode) {
-  //   return component.isWebComponent && (
-  //     <ul>
-  //       <li>
-  //         <div>
-  //           <p class='explorer__component-tag-name' id={component.uid}
-  //             onClick={() => {
-  //               this.activeTargetEl = component.el;
-  //               this.cssVariables = getCssVariablesForShadowEl(component.el);
-  //               this.cssShadowParts = getCssShadowParts(component.el);
-  //             }}
-  //             onMouseEnter={(e) => {
-  //               const target = e.target as HTMLElement;
-  //               if (target.querySelector('ul')) {
-  //                 return;
-  //               }
-  //               if (target.id === component.uid) {
-  //                 component.el.style.outline = '2px solid red';
+  private highlightCanvasEl(el: HTMLElement) {
+    el.style.outline = '2px solid red';
 
-  //                 const targetRect = this.targetEl.getBoundingClientRect();
-  //                 const componentRect = component.el.getBoundingClientRect();
+    const targetRect = this.targetEl.getBoundingClientRect();
+    const componentRect = el.getBoundingClientRect();
 
-  //                 this.inspectorY = componentRect.top - targetRect.top;
-  //                 this.inspectorX = componentRect.left - targetRect.left;
-  //                 this.inspectorWidth = componentRect.width;
-  //                 this.inspectorHeight = componentRect.height;
+    this.inspectorY = componentRect.top - targetRect.top;
+    this.inspectorX = componentRect.left - targetRect.left;
+    this.inspectorWidth = componentRect.width;
+    this.inspectorHeight = componentRect.height;
+  }
 
-  //               }
-  //             }} onMouseLeave={() => {
-  //               component.el.style.outline = '';
-  //             }}>{component.el.tagName}</p>
-  //           {component.children.length > 0 && component.children.map(c => this.renderComponent(c))}
-  //         </div>
-  //       </li>
-  //     </ul>
-  //   )
-  // }
+  private clearCanvasHighlight(el: HTMLElement) {
+    el.style.outline = '';
+  }
 
   private renderComponentsTab() {
     const { components } = this;
     return (
       <div class='explorer__elements'>
-        {components && <app-tree node={components} onInspect={({ detail }) => this.inspect(detail)}></app-tree>}
+        {components && <app-tree
+          node={components}
+          onInspect={({ detail }) => this.inspect(detail)}
+          onHighlightStart={({ detail }) => this.highlightCanvasEl(detail)}
+          onHighlightEnd={({ detail }) => this.clearCanvasHighlight(detail)}></app-tree>}
       </div>
     )
   }
@@ -160,10 +151,14 @@ export class AppExplorer implements ComponentInterface {
   }
 
   private renderCssShadowParts() {
-    const { cssShadowParts } = this;
+    const { cssShadowParts, hoveredShadowPart, activeShadowPart } = this;
     return (
       <section id='css-shadow-parts'>
-        <app-knob-css-shadow-part-list items={cssShadowParts}></app-knob-css-shadow-part-list>
+        <app-knob-css-shadow-part-list
+          items={cssShadowParts}
+          hoveredPartEl={hoveredShadowPart}
+          activePartEl={activeShadowPart}
+        ></app-knob-css-shadow-part-list>
       </section>
     )
   }
@@ -202,7 +197,9 @@ export class AppExplorer implements ComponentInterface {
             <div class='explorer__canvas' id='explorer-component' style={{
               zoom: `${this.zoomFactor}%`
             }}>
-              <slot />
+              {this.frameSrc ? (<iframe
+                ref={ref => this.frameEl = ref}
+                class='explorer__canvas-frame' src={this.frameSrc}></iframe>) : (<slot />)}
               <div class='explorer__canvas-inspector' style={{
                 width: `${inspectorWidth}px`,
                 height: `${inspectorHeight}px`,
@@ -236,18 +233,6 @@ export class AppExplorer implements ComponentInterface {
             }[this.activeTabIndex]}
           </div>
         </div>
-        {/* <section>
-          <h4>Hovered Shadow Part</h4>
-          <ul>
-            <pre>{this.hoveredShadowPart && this.hoveredShadowPart.outerHTML}</pre>
-          </ul>
-        </section>
-        <section>
-          <h4>Selected Shadow Part</h4>
-          <ul>
-            <pre>{this.activeShadowPart && this.activeShadowPart.outerHTML}</pre>
-          </ul>
-        </section> */}
       </Host>
     )
   }

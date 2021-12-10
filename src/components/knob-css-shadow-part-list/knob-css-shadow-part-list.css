@@ -1,0 +1,8 @@
+
+/* Knob: Placeholder text
+ * -------------------------------------------------- */
+
+.knob__placeholder-text {
+  color: var(--ion-color-medium);
+  font-size: 0.75rem;
+}

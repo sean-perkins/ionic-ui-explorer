@@ -5,26 +5,49 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { WebComponentNode } from "./components/app-explorer/types";
+import { WebComponentNode } from "./components/explorer/types";
 export namespace Components {
     interface AppExample {
     }
     interface AppExplorer {
+        "frameSrc": string;
     }
     interface AppKnobCssShadowPartList {
+        /**
+          * The active element selected that contains a shadow part.
+         */
+        "activePartEl": HTMLElement;
+        /**
+          * The hovered element in the explorer that matches a shadow part.
+         */
+        "hoveredPartEl": HTMLElement;
+        "i18n": { no_results: string; };
+        /**
+          * The list of shadow part elements.
+         */
         "items": HTMLElement[];
     }
     interface AppKnobCssVariableList {
+        "i18n": { name: string; value: string; no_results: string; };
+        /**
+          * The list of CSS variable name/value pairs.
+         */
         "items": string[][];
     }
     interface AppRoot {
     }
     interface AppTabButton {
+        /**
+          * `true` if the tab button is active with a selected display.
+         */
         "active": boolean;
         /**
           * `true` if the tab button is disabled from selection.
          */
         "disabled": boolean;
+        /**
+          * The numeric index/value of the tab button.
+         */
         "index": number;
     }
     interface AppTree {
@@ -91,12 +114,32 @@ declare namespace LocalJSX {
     interface AppExample {
     }
     interface AppExplorer {
+        "frameSrc"?: string;
     }
     interface AppKnobCssShadowPartList {
+        /**
+          * The active element selected that contains a shadow part.
+         */
+        "activePartEl"?: HTMLElement;
+        /**
+          * The hovered element in the explorer that matches a shadow part.
+         */
+        "hoveredPartEl"?: HTMLElement;
+        "i18n"?: { no_results: string; };
+        /**
+          * The list of shadow part elements.
+         */
         "items"?: HTMLElement[];
     }
     interface AppKnobCssVariableList {
+        "i18n"?: { name: string; value: string; no_results: string; };
+        /**
+          * The list of CSS variable name/value pairs.
+         */
         "items"?: string[][];
+        /**
+          * Emitted when the input control for the CSS variable has a new value.
+         */
         "onVariableChange"?: (event: CustomEvent<{
     name: string;
     value: string;
@@ -105,12 +148,21 @@ declare namespace LocalJSX {
     interface AppRoot {
     }
     interface AppTabButton {
+        /**
+          * `true` if the tab button is active with a selected display.
+         */
         "active"?: boolean;
         /**
           * `true` if the tab button is disabled from selection.
          */
         "disabled"?: boolean;
+        /**
+          * The numeric index/value of the tab button.
+         */
         "index"?: number;
+        /**
+          * Emitted when an enabled tab button is selected.
+         */
         "onTabChange"?: (event: CustomEvent<number>) => void;
     }
     interface AppTree {
@@ -118,6 +170,14 @@ declare namespace LocalJSX {
           * The nested structure of web component element nodes to display in a nested list.
          */
         "node"?: WebComponentNode;
+        /**
+          * Emits the element to remove highlighting in the canvas.
+         */
+        "onHighlightEnd"?: (event: CustomEvent<HTMLElement>) => void;
+        /**
+          * Emits the element to start highlighting in the canvas.
+         */
+        "onHighlightStart"?: (event: CustomEvent<HTMLElement>) => void;
         /**
           * The inspect button for a specific element was selected. Emits the `HTMLElement` of the tag selected.
          */

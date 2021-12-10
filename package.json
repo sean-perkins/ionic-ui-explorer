@@ -20,7 +20,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@floating-ui/dom": "^0.1.6",
     "@ionic/core": "^6.0.0"
   }
 }

@@ -1,5 +1,5 @@
 import { Component, Event, h, Prop, EventEmitter } from "@stencil/core";
-import { WebComponentNode } from "../app-explorer/types";
+import { WebComponentNode } from "../explorer/types";
 
 
 @Component({
@@ -20,8 +20,32 @@ export class Tree {
    */
   @Event() inspect: EventEmitter<HTMLElement>;
 
-  inspectButtonClicked(node: WebComponentNode) {
+  /**
+   * Emits the element to start highlighting in the canvas.
+   */
+  @Event() highlightStart: EventEmitter<HTMLElement>;
+
+  /**
+   * Emits the element to remove highlighting in the canvas.
+   */
+  @Event() highlightEnd: EventEmitter<HTMLElement>;
+
+  private inspectButtonClicked(node: WebComponentNode) {
     this.inspect.emit(node.el)
+  }
+
+  private tagNameMouseEnter(ev: MouseEvent, node: WebComponentNode) {
+    const target = ev.target as HTMLElement;
+    if (target.querySelector('ul')) {
+      return;
+    }
+    if (target.id === node.uid) {
+      this.highlightStart.emit(node.el);
+    }
+  }
+
+  private tagNameMouseLeave(node: WebComponentNode) {
+    this.highlightEnd.emit(node.el);
   }
 
   private renderBranch(node: WebComponentNode) {
@@ -38,13 +62,15 @@ export class Tree {
                     const { checked } = ev.target as HTMLInputElement;
                     node.el.style.display = checked ? '' : 'none';
                   }} />
-                <div class='tree__node-name' id={node.uid}>
+                <div class='tree__node-name' id={node.uid}
+                  onMouseEnter={(ev) => this.tagNameMouseEnter(ev, node)}
+                  onMouseLeave={() => this.tagNameMouseLeave(node)}>
                   {`<${node.el.tagName.toLowerCase()}>`}
                 </div>
               </div>
               <button
                 class='tree__inspect-btn'
-                type="button" onClick={() => this.inspectButtonClicked(node)}>(Inspect)</button>
+                type='button' onClick={() => this.inspectButtonClicked(node)}>(Inspect)</button>
             </div>
             {
               node.children.length > 0 && node.children.map(child => this.renderBranch(child))

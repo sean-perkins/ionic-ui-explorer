@@ -11,16 +11,6 @@ export class AppRoot {
       <div>
         <main>
           <app-explorer>
-            {/* <ion-list>
-              <ion-item>
-                <ion-button>Yay!</ion-button>
-              </ion-item>
-              <ion-item>
-                <ion-label position="stacked">Input label</ion-label>
-                <ion-input></ion-input>
-              </ion-item>
-            </ion-list> */}
-            {/* <app-example></app-example> */}
             <ion-list inset={true}>
               <ion-list-header>Basic</ion-list-header>
               <ion-accordion-group>

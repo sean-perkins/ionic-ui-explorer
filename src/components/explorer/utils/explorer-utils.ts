@@ -1,5 +1,11 @@
 import { WebComponentNode } from "../types";
 
+/**
+ * Queries all web component nodes starting at the target element.
+ * @param target The element to start DOM traversing at.
+ * @returns A nested object of the host elements, the web component children and
+ * if the element is a web component node.
+ */
 export const getWebComponentNodes = (target: Element) => {
   let match: WebComponentNode = {
     el: target as HTMLElement,
@@ -13,6 +19,12 @@ export const getWebComponentNodes = (target: Element) => {
   return match;
 }
 
+/**
+ * Parses the stylesheet of a shadow DOM to fetch all available
+ * CSS variables that existing within the `:host` selector.
+ * @param target The element to pierce and query CSS variables from.
+ * @returns Multi-dimensional array of the CSS variable name and value.
+ */
 export const getCssVariablesForShadowEl = (target: HTMLElement) => {
   if (!target.shadowRoot) {
     return [];
@@ -30,6 +42,11 @@ export const getCssVariablesForShadowEl = (target: HTMLElement) => {
     });
 };
 
+/**
+ * Queries CSS Shadow Parts within a shadow DOM.
+ * @param el The element to pierce and query shadow parts from.
+ * @returns The array of shadow part HTML elements.
+ */
 export const getCssShadowParts = (el: HTMLElement) => {
   if (!el.shadowRoot) {
     return [];

@@ -1,7 +1,14 @@
+
+/* Knob: Variable List
+ * -------------------------------------------------- */
+
 .knob-variable-list {
   display: grid;
   gap: 2px;
 }
+
+/* Knob: Variable
+ * -------------------------------------------------- */
 
 .knob-variable {
   display: grid;
@@ -9,28 +16,39 @@
   align-items: center;
   padding: 4px;
   gap: 8px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--ion-color-light);
 }
 
 .knob-variable label {
   font-weight: 600;
-  font-size: 0.75em;
+  font-size: var(--ion-font-sm);
 }
 
 .knob-variable input {
   border-radius: 4px;
-  border: 1px solid #eee;
+  border: 1px solid var(--ion-color-light);
   padding: 4px 8px 4px 0;
 }
+
+/* Knob: Header
+ * -------------------------------------------------- */
 
 .knob__header {
   display: grid;
   grid-template-columns: 150px 1fr;
   font-weight: bold;
-  font-size: 0.75em;
+  font-size: var(--ion-font-sm);
 }
 
 .knob__header-text {
   color: rgba(51, 51, 51, 0.75);
   padding: 10px 14px;
+}
+
+/* Knob: Placeholder text
+ * -------------------------------------------------- */
+
+ .knob__placeholder-text {
+  color: var(--ion-color-medium);
+  font-size: 0.75rem;
 }
